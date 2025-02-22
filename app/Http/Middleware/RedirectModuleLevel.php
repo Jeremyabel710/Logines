@@ -37,6 +37,10 @@
 
             /** @var User $user */
             $user = $request->user();
+            if (!$user) {
+                // Si no hay usuario autenticado, puedes redirigir al login o manejar el error de otra manera
+                return redirect('login');  // O la ruta que consideres adecuada
+            }
             $level = $user->getLevel();
             $path = explode('/', $request->path());
             $levels = $user->getLevels();

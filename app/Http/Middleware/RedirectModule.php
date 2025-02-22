@@ -29,8 +29,11 @@
          */
         public function handle($request, Closure $next)
         {
-
-            $module = $request->user()->getModule();
+            $user= $request->user();
+            if (!$user) {
+                return redirect()->route('login'); // O manejar el error como prefieras
+            }
+            $module = $user->getModule();
             $path = explode('/', $request->path());
             $modules = $request->user()->getModules();
             $this->route_path = $request->path();
