@@ -22,7 +22,7 @@ use Illuminate\Support\Facades\DB;
 use Modules\Finance\Traits\FinanceTrait;
 use Modules\Pos\Models\CashTransaction;
 use App\Models\Tenant\CashDocumentCredit;
-
+use Illuminate\Support\Facades\Auth;
 
 class CashController extends Controller
 {
@@ -31,11 +31,19 @@ class CashController extends Controller
 
     public function index()
     {
+        if (!Auth::check()) {
+            return redirect()->route('login')->withErrors('Debes iniciar sesión.');
+        }
+    
         return view('restaurant::cash.index');
     }
 
     public function posFilter()
     {
+        if (!Auth::check()) {
+            return redirect()->route('login')->withErrors('Debes iniciar sesión.');
+        }
+    
         return view('restaurant::cash.filter_pos');
     }
 
