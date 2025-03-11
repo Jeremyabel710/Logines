@@ -13,6 +13,7 @@ class SaleOpportunityFileService
 
         if (!Storage::disk('tenant')->exists($path)) {
             die('El archivo no existe.');
+            exit;
         }
     
         $file = Storage::disk('tenant')->get($path);
