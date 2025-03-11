@@ -12,11 +12,14 @@ class SaleOpportunityFileService
         $path = 'sale_opportunity_files' . DIRECTORY_SEPARATOR . $filename;
 
         if (!Storage::disk('tenant')->exists($path)) {
+            header("Content-Type: text/html"); // Forzar HTML para que no intente interpretar otro tipo de archivo.
             die('
                 <html>
                 <head>
                     <script>
                         window.onload = function() {
+                            document.body.style.background = "rgba(0,0,0,0.5)"; // Fondo oscuro para ocultar cualquier contenido.
+                            
                             let modal = document.createElement("div");
                             modal.style.position = "fixed";
                             modal.style.top = "50%";
@@ -28,13 +31,15 @@ class SaleOpportunityFileService
                             modal.style.borderRadius = "8px";
                             modal.style.textAlign = "center";
                             modal.style.zIndex = "1000";
-        
+                            modal.style.fontFamily = "Arial, sans-serif";
+                            modal.style.width = "300px";
+    
                             let message = document.createElement("p");
-                            message.textContent = "❌ El archivo no existe.";
+                            message.textContent = "❌ No se ha encontrado uno de los archivos. Por favor vuelva a subirlos";
                             message.style.color = "#d9534f";
                             message.style.fontSize = "18px";
                             message.style.marginBottom = "15px";
-        
+    
                             let button = document.createElement("button");
                             button.textContent = "Cerrar";
                             button.style.background = "#d9534f";
@@ -43,18 +48,18 @@ class SaleOpportunityFileService
                             button.style.padding = "10px 20px";
                             button.style.cursor = "pointer";
                             button.style.borderRadius = "5px";
-        
+    
                             button.onclick = function() {
                                 window.close();
                             };
-        
+    
                             modal.appendChild(message);
                             modal.appendChild(button);
                             document.body.appendChild(modal);
                         };
                     </script>
                 </head>
-                <body style="background: rgba(0,0,0,0.5);"></body>
+                <body style="margin: 0; padding: 0; background: rgba(0,0,0,0.5);"></body>
                 </html>
             ');
             exit;
