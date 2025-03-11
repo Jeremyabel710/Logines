@@ -12,9 +12,19 @@ class SaleOpportunityFileService
         $path = 'sale_opportunity_files' . DIRECTORY_SEPARATOR . $filename;
 
         if (!Storage::disk('tenant')->exists($path)) {
-            die('El archivo no existe.');
+            die('
+                <html>
+                <head>
+                    <title>Error</title>
+                </head>
+                <body>
+                    <h2 style="color: red; text-align: center;">❌ El archivo no existe.</h2>
+                </body>
+                </html>
+            ');
             exit;
         }
+        
     
         $file = Storage::disk('tenant')->get($path);
         $temp = tempnam(sys_get_temp_dir(), 'tmp_sale_opportunity_files');
