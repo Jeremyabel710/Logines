@@ -15,15 +15,17 @@ class SaleOpportunityFileService
             die('
                 <html>
                 <head>
-                    <title>Error</title>
+                    <script>
+                        alert("❌ El archivo no existe.");
+                        window.close();
+                    </script>
                 </head>
-                <body>
-                    <h2 style="color: red; text-align: center;">❌ El archivo no existe.</h2>
-                </body>
+                <body></body>
                 </html>
             ');
             exit;
         }
+        
         
     
         $file = Storage::disk('tenant')->get($path);
