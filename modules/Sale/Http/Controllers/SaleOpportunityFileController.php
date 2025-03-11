@@ -11,7 +11,7 @@ use Illuminate\Support\Str;
 use Modules\Sale\Models\SaleOpportunityFile;
 use Illuminate\Support\Facades\Storage;
 use Modules\Finance\Helpers\UploadFileHelper;
-
+use Exception;
 class SaleOpportunityFileController extends Controller
 {
 
@@ -121,7 +121,6 @@ class SaleOpportunityFileController extends Controller
                 window.close();
             </script>");
         }
-    }
     }
 
     /**
