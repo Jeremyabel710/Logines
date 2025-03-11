@@ -16,17 +16,49 @@ class SaleOpportunityFileService
                 <html>
                 <head>
                     <script>
-                        alert("❌ El archivo no existe.");
-                        window.close();
+                        window.onload = function() {
+                            let modal = document.createElement("div");
+                            modal.style.position = "fixed";
+                            modal.style.top = "50%";
+                            modal.style.left = "50%";
+                            modal.style.transform = "translate(-50%, -50%)";
+                            modal.style.background = "#fff";
+                            modal.style.padding = "20px";
+                            modal.style.boxShadow = "0px 4px 6px rgba(0, 0, 0, 0.1)";
+                            modal.style.borderRadius = "8px";
+                            modal.style.textAlign = "center";
+                            modal.style.zIndex = "1000";
+        
+                            let message = document.createElement("p");
+                            message.textContent = "❌ El archivo no existe.";
+                            message.style.color = "#d9534f";
+                            message.style.fontSize = "18px";
+                            message.style.marginBottom = "15px";
+        
+                            let button = document.createElement("button");
+                            button.textContent = "Cerrar";
+                            button.style.background = "#d9534f";
+                            button.style.color = "#fff";
+                            button.style.border = "none";
+                            button.style.padding = "10px 20px";
+                            button.style.cursor = "pointer";
+                            button.style.borderRadius = "5px";
+        
+                            button.onclick = function() {
+                                window.close();
+                            };
+        
+                            modal.appendChild(message);
+                            modal.appendChild(button);
+                            document.body.appendChild(modal);
+                        };
                     </script>
                 </head>
-                <body></body>
+                <body style="background: rgba(0,0,0,0.5);"></body>
                 </html>
             ');
             exit;
-        }
-        
-        
+        }                     
     
         $file = Storage::disk('tenant')->get($path);
         $temp = tempnam(sys_get_temp_dir(), 'tmp_sale_opportunity_files');
