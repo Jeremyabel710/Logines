@@ -103,73 +103,73 @@ class SaleOpportunityFileController extends Controller
     }
 
     public function download($filename) {
-try {
-        $decodedFilename = urldecode($filename); // Decodificar el nombre del archivo
-        $path = 'sale_opportunity_files' . DIRECTORY_SEPARATOR . $decodedFilename;
-
-        if (!Storage::disk('tenant')->exists($path)) {
+        try {
+            $decodedFilename = urldecode($filename); // Decodificar el nombre del archivo
+            $path = 'sale_opportunity_files' . DIRECTORY_SEPARATOR . $decodedFilename;
+    
+            if (!Storage::disk('tenant')->exists($path)) {
+                return response()->make('
+                    <html>
+                    <head>
+                        <script>
+                            window.onload = function() {
+                                let modal = document.createElement("div");
+                                modal.style.position = "fixed";
+                                modal.style.top = "50%";
+                                modal.style.left = "50%";
+                                modal.style.transform = "translate(-50%, -50%)";
+                                modal.style.background = "#ffff";
+                                modal.style.padding = "20px";
+                                modal.style.boxShadow = "0px 4px 6px rgba(0, 0, 0, 0.1)";
+                                modal.style.borderRadius = "8px";
+                                modal.style.textAlign = "center";
+                                modal.style.zIndex = "1000";
+                                modal.style.fontFamily = "Arial, sans-serif";
+    
+                                let message = document.createElement("p");
+                                message.textContent = "❌ El archivo no existe.";
+                                message.style.color = "#d9534f";
+                                message.style.fontSize = "18px";
+                                message.style.marginBottom = "15px";
+    
+                                let button = document.createElement("button");
+                                button.textContent = "Cerrar";
+                                button.style.background = "#d9534f";
+                                button.style.color = "#fff";
+                                button.style.border = "none";
+                                button.style.padding = "10px 20px";
+                                button.style.cursor = "pointer";
+                                button.style.borderRadius = "5px";
+    
+                                button.onclick = function() {
+                                    window.close();
+                                };
+    
+                                modal.appendChild(message);
+                                modal.appendChild(button);
+                                document.body.appendChild(modal);
+                            };
+                        </script>
+                    </head>
+                    <body style="background: rgba(0,0,0,0.5);"></body>
+                    </html>
+                ', 200, ['Content-Type' => 'text/html']);
+            }
+    
+            return Storage::disk('tenant')->download($path);
+        } catch (Exception $e) {
             return response()->make('
                 <html>
                 <head>
                     <script>
-                        window.onload = function() {
-                            let modal = document.createElement("div");
-                            modal.style.position = "fixed";
-                            modal.style.top = "50%";
-                            modal.style.left = "50%";
-                            modal.style.transform = "translate(-50%, -50%)";
-                            modal.style.background = "#fff";
-                            modal.style.padding = "20px";
-                            modal.style.boxShadow = "0px 4px 6px rgba(0, 0, 0, 0.1)";
-                            modal.style.borderRadius = "8px";
-                            modal.style.textAlign = "center";
-                            modal.style.zIndex = "1000";
-                            modal.style.fontFamily = "Arial, sans-serif";
-
-                            let message = document.createElement("p");
-                            message.textContent = "❌ El archivo no existe.";
-                            message.style.color = "#d9534f";
-                            message.style.fontSize = "18px";
-                            message.style.marginBottom = "15px";
-
-                            let button = document.createElement("button");
-                            button.textContent = "Cerrar";
-                            button.style.background = "#d9534f";
-                            button.style.color = "#fff";
-                            button.style.border = "none";
-                            button.style.padding = "10px 20px";
-                            button.style.cursor = "pointer";
-                            button.style.borderRadius = "5px";
-
-                            button.onclick = function() {
-                                window.close();
-                            };
-
-                            modal.appendChild(message);
-                            modal.appendChild(button);
-                            document.body.appendChild(modal);
-                        };
+                        alert("Ocurrió un error al intentar descargar el archivo.");
+                        window.close();
                     </script>
                 </head>
-                <body style="background: rgba(0,0,0,0.5);"></body>
+                <body></body>
                 </html>
-            ', 200, ['Content-Type' => 'text/html']);
+            ', 500, ['Content-Type' => 'text/html']);
         }
-
-        return Storage::disk('tenant')->download($path);
-    } catch (Exception $e) {
-        return response()->make('
-            <html>
-            <head>
-                <script>
-                    alert("Ocurrió un error al intentar descargar el archivo.");
-                    window.close();
-                </script>
-            </head>
-            <body></body>
-            </html>
-        ', 500, ['Content-Type' => 'text/html']);
-    }
     }
 
     /**
