@@ -9,10 +9,17 @@ use App\Models\Tenant\SaleNoteItem;
 use Carbon\Carbon;
 use Modules\Expense\Models\Expense;
 use App\Models\Tenant\SaleNote;
-
+use App\Models\Tenant\Configuration;
 
 class DashboardUtility
 {
+    protected static $colors = [
+        'white' => ['rgb(255, 250, 240)', 'rgb(40, 40, 40)'], // Blanco cremoso con un gris oscuro
+        'blue' => ['#4a90e2', 'rgb(255, 140, 0)'],            // Azul medio con un naranja cálido
+        'green' => ['#1abc9c', 'rgb(241, 196, 15)'],          // Verde suave con un amarillo brillante
+        'red' => ['#e74c3c', 'rgb(52, 152, 219)'],            // Rojo vibrante con un azul suave
+        'dark' => ['#2c3e50', 'rgb(189, 195, 199)'],   
+    ];
     public function data($request)
     {
 
@@ -60,7 +67,11 @@ class DashboardUtility
 
 
     private function utilities_totals($establishment_id, $d_start, $d_end, $enabled_expense, $item_id){
-
+        $configuration = Configuration::find(1);
+        $visual = $configuration ? json_decode(json_encode($configuration->visual), true) : [];
+        
+        $theme = $visual['sidebar_theme'] ?? 'blue'; // Definir el tema desde la configuración
+        $graph_colors = self::$colors[$theme];
 
         if($d_start && $d_end){
 
@@ -138,10 +149,7 @@ class DashboardUtility
                     [
                         'label' => 'Utilidades',
                         'data' => [round($total_income,2), round($total_egress,2)],
-                        'backgroundColor' => [
-                            'rgb(20, 120, 250)',
-                            'rgb(252, 78, 75)',
-                        ]
+                        'backgroundColor' => $graph_colors
                     ]
                 ],
             ]
